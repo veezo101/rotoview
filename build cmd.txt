@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole -n rotoview --icon=rotoview.ico main.py

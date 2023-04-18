@@ -21,12 +21,13 @@ try:
     with open('path.txt', 'r') as file:
         path = file.read().rstrip()
     root= tk.Tk()
+    root.iconbitmap("rotoview.ico")
+    root.title('Rotoview-v0.1.1')
 except IOError:
     path = "path.txt not found"
 
 try:
     canvas1 = tk.Canvas(root, width = 800, height = 500)
-    root.title('Rotoview-v0.1.1')
     canvas1.pack()
 
     def exit():
