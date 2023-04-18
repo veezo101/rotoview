@@ -1,17 +1,18 @@
 import traceback
 import shutil
 import webbrowser
-import urllib.parse
 # from magic import *
 import tkinter as tk
 
 class magic:
     def restore():
-        shutil.copy("./Chara-479.chara","{0}/Chara-479.chara".format(path))
+        shutil.copy("./Chara-479.chara","{0}/Chara-479.chara".format(path+"/Sprites"))
+        shutil.copy("./Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/Mugshots"))
         label2.config(text="Restored Rotom")
     def replace(id):
         try:
-            shutil.copy("{0}/Chara-{1}.chara".format(path,id),"{0}/Chara-479.chara".format(path))
+            shutil.copy("{0}/Chara-{1}.chara".format(path+"/Sprites",id),"{0}/Chara-479.chara".format(path+"/Sprites"))
+            shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/Mugshots"))
             label2.config(text="Updated {0} to {1}".format("479",id))
         except IOError:
             label2.config(text="Err Invalid File")
@@ -25,7 +26,7 @@ except IOError:
 
 try:
     canvas1 = tk.Canvas(root, width = 800, height = 500)
-    root.title('Rotoview-v0.1')
+    root.title('Rotoview-v0.1.1')
     canvas1.pack()
 
     def exit():
