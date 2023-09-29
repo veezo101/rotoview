@@ -1,5 +1,5 @@
 =latest dev=
-pyinstaller --noconsole -n rotoview --add-data "path.txt;." --additional-hooks-dir=. --icon=rotoview.ico main.py
+pyinstaller --onefile --noconsole -n rotoview --add-data "path.txt;." --icon=rotoview.ico main.py
 
 =latest stable=
 pyinstaller --onefile --noconsole -n rotoview --icon=rotoview.ico main.py

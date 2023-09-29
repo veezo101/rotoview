@@ -25,12 +25,17 @@ try:
     root= tk.Tk()
     root.iconbitmap("rotoview.ico")
     root.title('Rotoview-v0.2.1')
-    root.geometry("800x600")
+    root.geometry("600x400")
 
     #staus label
     statusLabel = tk.Label(root, text="status", fg='green', font=('helvetica', 12, 'bold'))
     statusLabel.place(relx=0.0,rely=1.0,anchor='sw')
 
+    #define exit
+    def exit():
+        root.destroy()
+        root.quit()
+    
     #exit button
     exitButton = tk.Button(text='Exit', command=exit, bg='brown',fg='white',width=10)
     exitButton.pack(side="bottom",pady=(5,30))
@@ -38,12 +43,7 @@ try:
 except IOError:
     path = "path.txt not found"
 
-try:
-
-    def exit():
-        root.destroy()
-        root.quit()
-        
+try:    
     
     def openpage():
        webbrowser.open("https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_with_form_differences",new=2)
@@ -58,7 +58,7 @@ try:
     #end of logo
     
     #Notebook Widget
-    notebook = ttk.Notebook(root,width=700,height=530)
+    notebook = ttk.Notebook(root,width=600,height=430)
     notebook.pack(padx=20,pady=20)
 
     #tab1 - Start up
@@ -75,16 +75,16 @@ try:
     EnterDexLabel = tk.Label(tab2,text="Enter Dex Number", fg='blue', font=('helvetica', 12, 'bold'))
     EnterDexLabel.place(relx=0.5,rely=0.25,anchor="center")
     EnterDexField = tk.Entry(tab2)
-    EnterDexField.place(relx=0.5,rely=0.32,anchor="center")
+    EnterDexField.place(relx=0.5,rely=0.34,anchor="center")
 
     ##GFX Buttons
     GFXReplaceButton = tk.Button(tab2,text='Replace', command=lambda:magic.replace(EnterDexField.get()), bg='brown',fg='white')
     GFXRestoreButton = tk.Button(tab2,text='Restore', command=magic.restore, bg='brown',fg='white')
     GFXPokeListButton = tk.Button(tab2,text='Poke with Forms List', command=openpage, bg='mediumblue',fg='white')
 
-    GFXReplaceButton.place(relx=0.45,rely=0.4,anchor="center")
-    GFXRestoreButton.place(relx=0.55,rely=0.4,anchor="center")
-    GFXPokeListButton.place(relx=0.5,rely=0.5,anchor="center")
+    GFXReplaceButton.place(relx=0.44,rely=0.45,anchor="center")
+    GFXRestoreButton.place(relx=0.56,rely=0.45,anchor="center")
+    GFXPokeListButton.place(relx=0.5,rely=0.57,anchor="center")
 
     #tab 3 - SFX
     tab3 = ttk.Frame(notebook)
