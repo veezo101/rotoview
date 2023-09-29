@@ -1,4 +1,4 @@
-('C:\\Users\\Avi\\Desktop\\rotoview\\build\\main\\PYZ-00.pyz',
+('C:\\Users\\Avi\\Desktop\\rotoview - Copy\\build\\main\\PYZ-00.pyz',
  [('_compat_pickle',
    'C:\\Users\\Avi\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_compat_pickle.py',
    'PYMODULE'),

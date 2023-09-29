@@ -161,3 +161,65 @@ module 'tkinter' has no attribute 'ImageTk'Traceback (most recent call last):
     img = tk.ImageTk.PhotoImage(tk.Image.open("./rotom.png"))
           ^^^^^^^^^^
 AttributeError: module 'tkinter' has no attribute 'ImageTk'
+name 'canvas1' is not definedTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 52, in <module>
+    canvas1.create_window(330,50,window=entry1)
+    ^^^^^^^
+NameError: name 'canvas1' is not defined
+Grid.grid_configure() takes from 1 to 2 positional arguments but 3 were givenTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 57, in <module>
+    labelx.grid(50,50)
+TypeError: Grid.grid_configure() takes from 1 to 2 positional arguments but 3 were given
+name 'canvas1' is not definedTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 77, in <module>
+    canvas1.create_window(330,30,window=EnterDexLabel)
+    ^^^^^^^
+NameError: name 'canvas1' is not defined
+unknown option "-padx"Traceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 76, in <module>
+    EnterDexLabel.place(padx=5,pady=5,relx=0,rely=0.1)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2504, in place_configure
+    self.tk.call(
+_tkinter.TclError: unknown option "-padx"
+cannot use geometry manager grid inside . which already has slaves managed by packTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 88, in <module>
+    GFXReplaceButton.grid(row=2,column=0,padx=10,pady=10)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2549, in grid_configure
+    self.tk.call(
+_tkinter.TclError: cannot use geometry manager grid inside . which already has slaves managed by pack
+cannot use geometry manager grid inside . which already has slaves managed by packTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 88, in <module>
+    GFXReplaceButton.grid(row=2,column=0)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2549, in grid_configure
+    self.tk.call(
+_tkinter.TclError: cannot use geometry manager grid inside . which already has slaves managed by pack
+cannot use geometry manager grid inside . which already has slaves managed by packTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 88, in <module>
+    GFXReplaceButton.grid(row=2,column=0)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2549, in grid_configure
+    self.tk.call(
+_tkinter.TclError: cannot use geometry manager grid inside . which already has slaves managed by pack
+cannot use geometry manager grid inside . which already has slaves managed by packTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 88, in <module>
+    GFXReplaceButton.grid(row=2,column=0)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2549, in grid_configure
+    self.tk.call(
+_tkinter.TclError: cannot use geometry manager grid inside . which already has slaves managed by pack
+unknown option "-row"Traceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 87, in <module>
+    GFXReplaceButton.place(row=2,column=0)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2504, in place_configure
+    self.tk.call(
+_tkinter.TclError: unknown option "-row"
+unknown option "-row"Traceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 87, in <module>
+    GFXReplaceButton.place(row=3,column=0)
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2504, in place_configure
+    self.tk.call(
+_tkinter.TclError: unknown option "-row"
+cannot use geometry manager pack inside .!notebook.!frame2 which already has slaves managed by gridTraceback (most recent call last):
+  File "C:\Users\Avi\Desktop\rotoview - Copy\main.py", line 87, in <module>
+    GFXReplaceButton.pack()
+  File "C:\Users\Avi\AppData\Local\Programs\Python\Python311\Lib\tkinter\__init__.py", line 2452, in pack_configure
+    self.tk.call(
+_tkinter.TclError: cannot use geometry manager pack inside .!notebook.!frame2 which already has slaves managed by grid

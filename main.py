@@ -3,32 +3,42 @@ import shutil
 import webbrowser
 # from magic import *
 import tkinter as tk
+from tkinter import ttk
+from tkinterdnd2 import DND_FILES, TkinterDnD
 
 class magic:
     def restore():
         shutil.copy("./Chara-479.chara","{0}/Chara-479.chara".format(path+"/Sprites"))
         shutil.copy("./Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/Mugshots"))
-        label2.config(text="Restored Rotom")
+        statusLabel.config(text="Restored Rotom")
     def replace(id):
         try:
             shutil.copy("{0}/Chara-{1}.chara".format(path+"/Sprites",id),"{0}/Chara-479.chara".format(path+"/Sprites"))
             shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/Mugshots"))
-            label2.config(text="Updated {0} to {1}".format("479",id))
+            statusLabel.config(text="Updated {0} to {1}".format("479",id))
         except IOError:
-            label2.config(text="Err Invalid File")
+            statusLabel.config(text="Err Invalid File")
 
 try:
     with open('path.txt', 'r') as file:
         path = file.read().rstrip()
     root= tk.Tk()
     root.iconbitmap("rotoview.ico")
-    root.title('Rotoview-v0.1.1')
+    root.title('Rotoview-v0.2.1')
+    root.geometry("800x600")
+
+    #staus label
+    statusLabel = tk.Label(root, text="status", fg='green', font=('helvetica', 12, 'bold'))
+    statusLabel.place(relx=0.0,rely=1.0,anchor='sw')
+
+    #exit button
+    exitButton = tk.Button(text='Exit', command=exit, bg='brown',fg='white',width=10)
+    exitButton.pack(side="bottom",pady=(5,30))
+
 except IOError:
     path = "path.txt not found"
 
 try:
-    canvas1 = tk.Canvas(root, width = 800, height = 500)
-    canvas1.pack()
 
     def exit():
         root.destroy()
@@ -38,38 +48,51 @@ try:
     def openpage():
        webbrowser.open("https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_with_form_differences",new=2)
         
-    def show():
-        canvas1.create_window(50,300,window=tk.Label(root,text=path, fg='blue', font=('helvetica', 12, 'bold')))
-
-    entry1 = tk.Entry(root)
-    canvas1.create_window(330,50,window=entry1)
-
-    label3 = tk.Label(root,text="Enter Dex Number", fg='blue', font=('helvetica', 12, 'bold'))
-    canvas1.create_window(330,30,window=label3)
+    # def show():
+    #     canvas1.create_window(50,300,window=tk.Label(root,text=path, fg='blue', font=('helvetica', 12, 'bold')))
 
     #rotom logo
     img = tk.PhotoImage(file="smol.png")
     label4 = tk.Label(root, image=img)
     label4.place(relx=1.0, rely=1.0, anchor='s')
     #end of logo
+    
+    #Notebook Widget
+    notebook = ttk.Notebook(root,width=700,height=530)
+    notebook.pack(padx=20,pady=20)
 
-    button1 = tk.Button(text='Replace', command=lambda:magic.replace(entry1.get()), bg='brown',fg='white')
-    button2 = tk.Button(text='Restore', command=magic.restore, bg='brown',fg='white')
-    button3 = tk.Button(text='Exit', command=exit, bg='brown',fg='white')
-    button4 = tk.Button(text='Poke with Forms List', command=openpage, bg='brown',fg='white')
+    #tab1 - Start up
+    tab1 = ttk.Frame(notebook)
+    labelCurrentPath = tk.Label(tab1, text= "Current Path:", fg='blue', font=('helvetica', 12, 'bold')) 
+    labelPath = tk.Label(tab1, text= "path.txt = "+path, fg='blue', font=('helvetica', 12, 'bold'))
+    labelCurrentPath.pack()
+    labelPath.pack()
 
-    canvas1.create_window(280, 100, window=button1)
-    canvas1.create_window(380, 100, window=button2)
-    canvas1.create_window(320, 150, window=button3)
-    canvas1.create_window(320, 350, window=button4)
+    #tab 2 - GFX
+    tab2 = ttk.Frame(notebook)
+    
+    ##Enter dex number
+    EnterDexLabel = tk.Label(tab2,text="Enter Dex Number", fg='blue', font=('helvetica', 12, 'bold'))
+    EnterDexLabel.place(relx=0.5,rely=0.25,anchor="center")
+    EnterDexField = tk.Entry(tab2)
+    EnterDexField.place(relx=0.5,rely=0.32,anchor="center")
 
-    label1 = tk.Label(root, text= "path.txt = "+path, fg='blue', font=('helvetica', 12, 'bold'))
-    canvas1.create_window(350, 200, window=label1)
+    ##GFX Buttons
+    GFXReplaceButton = tk.Button(tab2,text='Replace', command=lambda:magic.replace(EnterDexField.get()), bg='brown',fg='white')
+    GFXRestoreButton = tk.Button(tab2,text='Restore', command=magic.restore, bg='brown',fg='white')
+    GFXPokeListButton = tk.Button(tab2,text='Poke with Forms List', command=openpage, bg='mediumblue',fg='white')
 
-    label2 = tk.Label(root, text="status", fg='green', font=('helvetica', 12, 'bold'))
-    canvas1.create_window(350, 250, window=label2)
+    GFXReplaceButton.place(relx=0.45,rely=0.4,anchor="center")
+    GFXRestoreButton.place(relx=0.55,rely=0.4,anchor="center")
+    GFXPokeListButton.place(relx=0.5,rely=0.5,anchor="center")
 
+    #tab 3 - SFX
+    tab3 = ttk.Frame(notebook)
 
+    
+    notebook.add(tab1,text='Start up')
+    notebook.add(tab2,text='GFX Mods')
+    notebook.add(tab3,text='SFX Mods')
 
     root.mainloop()
 except Exception as e:
