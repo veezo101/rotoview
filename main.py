@@ -6,13 +6,46 @@ import tkinter as tk
 from tkinter import ttk
 import os
 import zipfile
+import psutil
 from tkinterdnd2 import DND_FILES, TkinterDnD
 
 class magic:
+    def updatePathField(process_name):
+        try:
+            for process in psutil.process_iter(['pid', 'name']):
+                if process.info['name'] == process_name:
+                        process_exe_path = psutil.Process(process.info['pid']).exe()
+                        pathfield.set(str(process_exe_path.rpartition('\\')[0]))
+                        statusLabel.config(text="Successfully detected path")
+                        return
+            statusLabel.config(text="Failed to auto detect path")            
+        except Exception as ex:
+            pathfield.set('')
+    
+    def updatePath():
+        try:
+            file = open("path.txt","w")
+            file.write(pathfield.get())
+            file.close()
+            statusLabel.config(text='Successfully updated path')
+
+            writtenFile = open('path.txt', 'r')
+            global path
+            path = writtenFile.read().rstrip()
+            labelPath.config(text="path.txt="+path)
+            statusLabel.config(text='Successfully updated and read path')
+        except Exception as ex:
+            statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+    
+
     def restore():
-        shutil.copy("./assets/GFX/Chara-479.chara","{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
-        shutil.copy("./assets/GFX/Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/GFX/Mugshots"))
-        statusLabel.config(text="Restored Rotom. Relog to view changes")
+        try:
+            shutil.copy("./assets/GFX/Chara-479.chara","{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
+            shutil.copy("./assets/GFX/Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/GFX/Mugshots"))
+            statusLabel.config(text="Restored Rotom. Relog to view changes")
+        except Exception as ex:
+            statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+    
     def replace(id):
         try:
             shutil.copy("{0}/Chara-{1}.chara".format(path+"/GFX/Sprites",id),"{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
@@ -22,6 +55,8 @@ class magic:
             statusLabel.config(text="Err Invalid File")
     
     def sfxGetCurrentState():
+        if(os.path.exists('{0}/PMU.exe'.format(path))==False):
+            return "invalidpath"
         isExistSFX = os.path.exists('{0}/SFX'.format(path))
         isExistsRotoOG = os.path.exists('{0}/SFX-RotoOG'.format(path))
         isExistsRotoSilent = os.path.exists('{0}/SFX-RotoSilent'.format(path))
@@ -40,7 +75,12 @@ class magic:
     
     def sfxResetFolder():
         try:
-            if(magic.sfxGetCurrentState()=="muted"):
+            currentState = magic.sfxGetCurrentState()
+            if(currentState=="invalidpath"):
+                statusLabel.config(text="Invalid Game Path!")
+                SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
+                return
+            if(currentState=="muted"):
                 os.rename("{0}/SFX".format(path),"{0}/SFX-RotoSilent".format(path))
             if(os.path.exists('{0}/SFX-RotoSilent'.format(path))):
                 shutil.rmtree('{0}/SFX-RotoSilent'.format(path),ignore_errors=True)
@@ -64,6 +104,9 @@ class magic:
     def mutePmu():
         try:
             currentState = magic.sfxGetCurrentState()
+            if(currentState=="invalidpath"):
+                statusLabel.config(text="Invalid Game Path!")
+                SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
             if(currentState=="muted"):
                 statusLabel.config(text="Already muted!")
                 SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
@@ -108,6 +151,9 @@ class magic:
     def unMutePmu():
         try:
             currentState = magic.sfxGetCurrentState()
+            if(currentState=="invalidpath"):
+                statusLabel.config(text="Invalid Game Path!")
+                SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
             if(currentState=="unmuted"):
                 statusLabel.config(text="Already unmuted!")
                 return
@@ -184,10 +230,22 @@ try:
 
     #tab1 - Start up
     tab1 = ttk.Frame(notebook)
-    labelCurrentPath = tk.Label(tab1, text= "Current Path:", fg='blue', font=('helvetica', 12, 'bold')) 
-    labelPath = tk.Label(tab1, text= "path.txt = "+path, fg='blue', font=('helvetica', 12, 'bold'))
+    labelCurrentPath = tk.Label(tab1, text= "Current Path:", fg='blue', font=('helvetica', 12, 'bold'),pady=1) 
+    labelPath = tk.Label(tab1, text= "path.txt = "+path, fg='blue', font=('helvetica', 12, 'bold'),pady=1)
     labelCurrentPath.pack()
     labelPath.pack()
+
+    labelPathHelper = tk.Label(tab1, text= "Enter Client path or Auto Detect when game is open", fg='blue', font=('helvetica', 12, 'bold'),pady=1)
+    labelPathHelper.place(relx=0.5,rely=0.4,anchor="center")
+
+    pathfield = tk.StringVar()
+    EnterPathfield = tk.Entry(tab1,textvariable=pathfield,width=80)
+    EnterPathfield.place(relx=0.5,rely=0.5,anchor="center")
+
+    UpdatePathButton = tk.Button(tab1,text='Update Path', command=magic.updatePath, bg='brown',fg='white')
+    AutoDetectPathButton = tk.Button(tab1,text='Auto Detect Path', command=lambda:magic.updatePathField('PMU.exe'), bg='green',fg='white')
+    UpdatePathButton.place(relx=0.5,rely=0.65,anchor="center")
+    AutoDetectPathButton.place(relx=0.5,rely=0.8,anchor="center")
 
     #tab 2 - GFX
     tab2 = ttk.Frame(notebook)
