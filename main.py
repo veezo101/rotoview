@@ -8,13 +8,13 @@ from tkinterdnd2 import DND_FILES, TkinterDnD
 
 class magic:
     def restore():
-        shutil.copy("./Chara-479.chara","{0}/Chara-479.chara".format(path+"/Sprites"))
-        shutil.copy("./Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/Mugshots"))
+        shutil.copy("./assets/GFX/Chara-479.chara","{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
+        shutil.copy("./assets/GFX/Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/GFX/Mugshots"))
         statusLabel.config(text="Restored Rotom")
     def replace(id):
         try:
-            shutil.copy("{0}/Chara-{1}.chara".format(path+"/Sprites",id),"{0}/Chara-479.chara".format(path+"/Sprites"))
-            shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/Mugshots"))
+            shutil.copy("{0}/Chara-{1}.chara".format(path+"/GFX/Sprites",id),"{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
+            shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/GFX/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/GFX/Mugshots"))
             statusLabel.config(text="Updated {0} to {1}".format("479",id))
         except IOError:
             statusLabel.config(text="Err Invalid File")
@@ -24,7 +24,7 @@ try:
         path = file.read().rstrip()
     root= tk.Tk()
     root.iconbitmap("rotoview.ico")
-    root.title('Rotoview-v0.2.1')
+    root.title('Rotoview-v0.2.2')
     root.geometry("600x400")
 
     #staus label
@@ -52,7 +52,7 @@ try:
     #     canvas1.create_window(50,300,window=tk.Label(root,text=path, fg='blue', font=('helvetica', 12, 'bold')))
 
     #rotom logo
-    img = tk.PhotoImage(file="smol.png")
+    img = tk.PhotoImage(file="./assets/GFX/smol.png")
     label4 = tk.Label(root, image=img)
     label4.place(relx=1.0, rely=1.0, anchor='s')
     #end of logo
