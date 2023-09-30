@@ -54,12 +54,6 @@ class magic:
         except Exception as ex:
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
 
-    def sfxHouseKeeping():
-        isExistSFX = os.path.exists('{0}/SFX'.format(path))
-        isExistsRotoOG = os.path.exists('{0}/SFX-RotoOG'.format(path))
-        isExistsRotoSilent = os.path.exists('{0}/SFX-RotoSilent'.format(path))
-        #debug
-        SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
     def mutePmu():
         try:
             currentState = magic.sfxGetCurrentState()
@@ -83,10 +77,9 @@ class magic:
                 statusLabel.config(text="Moved current to OG")
                 os.rename("{0}/SFX-RotoSilent".format(path),"{0}/SFX".format(path))
                 statusLabel.config(text="Client successfully muted")
+
             SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
 
-            # magic.sfxHouseKeeping()
-            
         except FileNotFoundError as ex:
             # statusLabel.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
@@ -97,11 +90,34 @@ class magic:
 
     def unMutePmu():
         try:
-            os.rename("{0}/SFX".format(path),"{0}/SFX-RotoSilent".format(path))
-            os.rename("{0}/SFX-RotoOG".format(path),"{0}/SFX".format(path))
-            statusLabel.config(text="Client successfully unmuted!")
-        except:
-            statusLabel.config(text="Failed to unmute client. Try again after closing the Client")
+            currentState = magic.sfxGetCurrentState()
+            if(currentState=="unmuted"):
+                statusLabel.config(text="Already unmuted!")
+                return
+            
+            if(currentState == "raiseResetFlag" or currentState=="schrodinger" or currentState=="nosfxbutog"):
+                magic.sfxResetFolder()
+                statusLabel.config(text="Folders Reset due to an error. Please try again")
+
+            if(currentState=="clean"):
+                with zipfile.ZipFile('./SilentSFX.zip','r') as silent_zip:
+                    silent_zip.extractall('{0}/SFX-RotoSilent'.format(path))
+                statusLabel.config(text="Client successfully unmuted")
+
+            if(currentState=="muted"):
+                os.rename("{0}/SFX".format(path),"{0}/SFX-RotoSilent".format(path))
+                os.rename("{0}/SFX-RotoOG".format(path),"{0}/SFX".format(path))
+                statusLabel.config(text="Client successfully unmuted")
+                
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
+
+        except FileNotFoundError as ex:
+            # statusLabel.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
+            statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+        except Exception as ex:
+            statusLabel.config(text="Failed to mute client. Try again after closing the Client")
+            #debug
+            #statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
         
 
 
