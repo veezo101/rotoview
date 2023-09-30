@@ -72,7 +72,9 @@ try:
     tab2 = ttk.Frame(notebook)
     
     ##Enter dex number
+    EnterDexHelperLabel = tk.Label(tab2,text="Use Rotom in game to view the desired sprite", fg='blue', font=('helvetica', 12, 'bold'))
     EnterDexLabel = tk.Label(tab2,text="Enter Dex Number", fg='blue', font=('helvetica', 12, 'bold'))
+    EnterDexHelperLabel.place(relx=0.5,rely=0.12,anchor="center")
     EnterDexLabel.place(relx=0.5,rely=0.25,anchor="center")
     EnterDexField = tk.Entry(tab2)
     EnterDexField.place(relx=0.5,rely=0.34,anchor="center")
