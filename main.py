@@ -18,7 +18,7 @@ class magic:
                         pathfield.set(str(process_exe_path.rpartition('\\')[0]))
                         statusLabel.config(text="Successfully detected path")
                         return
-            statusLabel.config(text="Failed to auto detect path")            
+            statusLabel.config(text="Failed to auto detect path. Make sure the client is open!")        
         except Exception as ex:
             pathfield.set('')
     
@@ -191,7 +191,7 @@ try:
         path = file.read().rstrip()
     root= tk.Tk()
     root.iconbitmap("rotoview.ico")
-    root.title('Rotoview-v0.2.3')
+    root.title('Rotoview-v0.2.5')
     root.geometry("600x400")
 
     #staus label
