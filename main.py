@@ -12,12 +12,12 @@ class magic:
     def restore():
         shutil.copy("./assets/GFX/Chara-479.chara","{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
         shutil.copy("./assets/GFX/Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/GFX/Mugshots"))
-        statusLabel.config(text="Restored Rotom")
+        statusLabel.config(text="Restored Rotom. Relog to view changes")
     def replace(id):
         try:
             shutil.copy("{0}/Chara-{1}.chara".format(path+"/GFX/Sprites",id),"{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
             shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/GFX/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/GFX/Mugshots"))
-            statusLabel.config(text="Updated {0} to {1}".format("479",id))
+            statusLabel.config(text="Updated {0} to {1}. Relog to view changes".format("479",id))
         except IOError:
             statusLabel.config(text="Err Invalid File")
     
