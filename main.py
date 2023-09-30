@@ -40,6 +40,8 @@ class magic:
     
     def sfxResetFolder():
         try:
+            if(magic.sfxGetCurrentState()=="muted"):
+                os.rename("{0}/SFX".format(path),"{0}/SFX-RotoSilent".format(path))
             if(os.path.exists('{0}/SFX-RotoSilent'.format(path))):
                 shutil.rmtree('{0}/SFX-RotoSilent'.format(path),ignore_errors=True)
             if(os.path.exists('{0}/SFX-RotoOG'.format(path))):
@@ -52,13 +54,19 @@ class magic:
             statusLabel.config(text="Successfully Restored SFX directory structure")
             SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
         except Exception as ex:
+            if(type(ex)==PermissionError):
+                statusLabel.config(text="Permission Error. Close the game client and retry.")
+                SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
+                return
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
 
     def mutePmu():
         try:
             currentState = magic.sfxGetCurrentState()
             if(currentState=="muted"):
                 statusLabel.config(text="Already muted!")
+                SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
                 return
             
             if(currentState == "raiseResetFlag" or currentState=="schrodinger" or currentState=="nosfxbutog"):
@@ -70,21 +78,30 @@ class magic:
                     silent_zip.extractall('{0}/SFX-RotoSilent'.format(path))
                 os.rename("{0}/SFX".format(path),"{0}/SFX-RotoOG".format(path))
                 os.rename("{0}/SFX-RotoSilent".format(path),"{0}/SFX".format(path))
-                statusLabel.config(text="Client successfully muted")
+                statusLabel.config(text="Client successfully muted except shiny")
+                if(os.path.exists('./assets/SFX/magic838.ogg')):
+                    shutil.copy('./assets/SFX/magic838.ogg',"{0}/SFX/magic838.ogg".format(path))
+                statusLabel.config(text="Client successfully muted except custom shiny!")
+
 
             if(currentState=="unmuted"):
                 os.rename("{0}/SFX".format(path),"{0}/SFX-RotoOG".format(path))
                 statusLabel.config(text="Moved current to OG")
                 os.rename("{0}/SFX-RotoSilent".format(path),"{0}/SFX".format(path))
-                statusLabel.config(text="Client successfully muted")
+                statusLabel.config(text="Client successfully muted except shiny")
+                if(os.path.exists('./assets/SFX/magic838.ogg')):
+                    shutil.copy('./assets/SFX/magic838.ogg',"{0}/SFX/magic838.ogg".format(path))
+                    statusLabel.config(text="Client successfully muted except custom shiny!")
 
             SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
 
         except FileNotFoundError as ex:
             # statusLabel.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
         except Exception as ex:
             statusLabel.config(text="Failed to mute client. Try again after closing the Client")
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
             #debug
             #statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
 
@@ -108,14 +125,16 @@ class magic:
                 os.rename("{0}/SFX".format(path),"{0}/SFX-RotoSilent".format(path))
                 os.rename("{0}/SFX-RotoOG".format(path),"{0}/SFX".format(path))
                 statusLabel.config(text="Client successfully unmuted")
-                
+
             SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
 
         except FileNotFoundError as ex:
             # statusLabel.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
         except Exception as ex:
             statusLabel.config(text="Failed to mute client. Try again after closing the Client")
+            SFXCurrentModeStatusLabel.config(text=magic.sfxGetCurrentState())
             #debug
             #statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
         
