@@ -215,9 +215,6 @@ try:
     def openpage():
        webbrowser.open("https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_with_form_differences",new=2)
         
-    # def show():
-    #     canvas1.create_window(50,300,window=tk.Label(root,text=path, fg='blue', font=('helvetica', 12, 'bold')))
-
     #rotom logo
     img = tk.PhotoImage(file="./assets/GFX/smol.png")
     label4 = tk.Label(root, image=img)
