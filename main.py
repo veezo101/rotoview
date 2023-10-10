@@ -37,23 +37,6 @@ class magic:
         except Exception as ex:
             statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
     
-
-    def restore():
-        try:
-            shutil.copy("./assets/GFX/Chara-479.chara","{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
-            shutil.copy("./assets/GFX/Portrait-479.portrait","{0}/Portrait-479.portrait.".format(path+"/GFX/Mugshots"))
-            statusLabel.config(text="Restored Rotom. Relog to view changes")
-        except Exception as ex:
-            statusLabel.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
-    
-    def replace(id):
-        try:
-            shutil.copy("{0}/Chara-{1}.chara".format(path+"/GFX/Sprites",id),"{0}/Chara-479.chara".format(path+"/GFX/Sprites"))
-            shutil.copy("{0}/Portrait-{1}.portrait".format(path+"/GFX/Mugshots",id),"{0}/Portrait-479.portrait".format(path+"/GFX/Mugshots"))
-            statusLabel.config(text="Updated {0} to {1}. Relog to view changes".format("479",id))
-        except IOError:
-            statusLabel.config(text="Err Invalid File")
-    
     def sfxGetCurrentState():
         if(os.path.exists('{0}/PMU.exe'.format(path))==False):
             return "invalidpath"
@@ -244,25 +227,7 @@ try:
     UpdatePathButton.place(relx=0.5,rely=0.65,anchor="center")
     AutoDetectPathButton.place(relx=0.5,rely=0.8,anchor="center")
 
-    #tab 2 - GFX
-    tab2 = ttk.Frame(notebook)
-    
-    ##Enter dex number
-    EnterDexHelperLabel = tk.Label(tab2,text="Use Rotom in game to view the desired sprite", fg='blue', font=('helvetica', 12, 'bold'))
-    EnterDexLabel = tk.Label(tab2,text="Enter Dex Number", fg='blue', font=('helvetica', 12, 'bold'))
-    EnterDexHelperLabel.place(relx=0.5,rely=0.12,anchor="center")
-    EnterDexLabel.place(relx=0.5,rely=0.25,anchor="center")
-    EnterDexField = tk.Entry(tab2)
-    EnterDexField.place(relx=0.5,rely=0.34,anchor="center")
-
-    ##GFX Buttons
-    GFXReplaceButton = tk.Button(tab2,text='Replace', command=lambda:magic.replace(EnterDexField.get()), bg='brown',fg='white')
-    GFXRestoreButton = tk.Button(tab2,text='Restore', command=magic.restore, bg='brown',fg='white')
-    GFXPokeListButton = tk.Button(tab2,text='Poke with Forms List', command=openpage, bg='mediumblue',fg='white')
-
-    GFXReplaceButton.place(relx=0.44,rely=0.45,anchor="center")
-    GFXRestoreButton.place(relx=0.56,rely=0.45,anchor="center")
-    GFXPokeListButton.place(relx=0.5,rely=0.57,anchor="center")
+    #tab 2 - GFX - deleted
 
     #tab 3 - SFX
     tab3 = ttk.Frame(notebook)
@@ -284,7 +249,6 @@ try:
 
     
     notebook.add(tab1,text='Start up')
-    notebook.add(tab2,text='GFX Mods')
     notebook.add(tab3,text='SFX Mods')
 
     root.mainloop()
