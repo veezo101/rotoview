@@ -6,11 +6,12 @@ It performs simple file replacements with common Python libraries.
 ## Features
 Check out [this](https://www.youtube.com/watch?v=ygGPIg310BU&list=PLfWszzdLIYzkFRJujJusHGLTQFE7I8Rdp&index=1) short playlist showcasing features from version 0.2.5
 - Auto detect path of game when running (for one time config)
-- Swap & Restore Rotom sprite file to view any desired sprite available. Specfically Rotom to easily view forms. (Requires Re-opening client to view changes)
+- ~~Swap & Restore Rotom sprite file to view any desired sprite available. Specfically Rotom to easily view forms. (Requires Re-opening client to view changes)~~
 - Hot swap to and from "Silent SFX Client" while retaining any custom SFX in the unmuted mode.
 
 
 Todo:
+- Add releases and look into CI/CD
 - Details of which packages to pip install etc
 - Screenshots/Video demos
 - Make the --add-data installation flag actually pick assets and path
