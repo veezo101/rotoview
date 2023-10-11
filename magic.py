@@ -21,23 +21,23 @@ class Magic:
             for process in psutil.process_iter(['pid', 'name']):
                 if process.info['name'] == process_name:
                     process_exe_path = psutil.Process(process.info['pid']).exe()
-                    self.path = str(process_exe_path.rpartition('\\')[0])
-                    file = open("path.txt", "w")
-                    file.write(self.rv.pathfield.get())
-                    file.close()
                     self.rv.pathfield.set(str(process_exe_path.rpartition('\\')[0]))
+                    self.path = self.rv.pathfield.get()
+                    with open('path.txt', 'w') as file:
+                        file.write(self.path)
                     self.rv.statusLbl.config(text="Successfully detected path")
                     self.rv.LblPath.config(text=f"path.txt = {self.path}")
                     self.rv.SFXStatusLbl.config(text=self.getSfxState())
                     return
             self.rv.statusLbl.config(text="Failed to auto detect path. Make sure the client is open!")
-        except Exception:
+        except Exception as ex:
             self.rv.pathfield.set('')
+            raise e
 
     def updatePath(self):
         try:
             self.path = self.rv.pathfield.get()
-            with open('path.txt', 'r') as file:
+            with open('path.txt', 'w') as file:
                 file.write(self.path)
             self.rv.statusLbl.config(text='Successfully updated path')
             writtenFile = open('path.txt', 'r')
@@ -47,6 +47,7 @@ class Magic:
             self.rv.SFXStatusLbl.config(text=self.getSfxState())
         except Exception as ex:
             self.rv.statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
+            raise e
 
     def getSfxState(self):
         if (not os.path.exists('{0}/PMU.exe'.format(self.path))):
