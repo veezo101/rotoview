@@ -1,28 +1,114 @@
 import tkinter as tk
-from tkinter import ttk
 
-from PIL import Image, ImageTk
+import customtkinter
+import customtkinter as ctk
+from PIL import Image
 
 from magic import Magic
 
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 
-# Defined a tk.Label subclass, so you don't have to put the same font every single time you add a label
-class Label(tk.Label):
-    def __init__(self, *args, **kwargs):
-        super().__init__(font=('helvetica', 12, 'bold'), *args, **kwargs)
+theme_img = ctk.CTkImage(dark_image=Image.open("./assets/GFX/sun.png"), light_image=Image.open("./assets/GFX/moon.png"), size=(20, 20))
 
-class RotoView(tk.Tk):
+class Button(ctk.CTkButton):
+    def __init__(self, master, fg_color='brown', hover_color="#721d1d", *args, **kwargs):
+        super().__init__(master=master, fg_color=fg_color, hover_color=hover_color, corner_radius=4, *args, **kwargs)
+
+
+class Label(ctk.CTkLabel):
+    def __init__(self, master, text_color=("black", "white"), *args, **kwargs):
+        super().__init__(master=master, font=ctk.CTkFont(family="helvetica", weight="bold", size=14), text_color=text_color, *args, **kwargs)
+
+
+class RotoTabs(ctk.CTkTabview):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.mode = None
+
+        self.add("Startup").grid(pady=20)
+        self.grid(row=0, column=0, sticky="nsew")
+
+        # tab1 - Start up
+        self.LblCurrentPath = Label(self.tab("Startup"), text="Current Path:")
+        self.LblCurrentPath.grid(row=0, column=0, sticky="nsew")
+        self.LblPath = Label(self.tab("Startup"), text=f"path.txt = {self.master.magic.path}")
+        self.LblPath.grid(row=1, column=0, sticky="nsew")
+
+        self.LblPathHelper = Label(self.tab("Startup"), text="Enter Client path below or Auto Detect when game is open")
+        self.LblPathHelper.grid(row=2, column=0, sticky="", pady=(50, 0))
+
+        self.EnterPathfield = ctk.CTkEntry(textvariable=self.master.pathfield, width=450, master=self.tab("Startup"), border_width=1,
+                                           corner_radius=3)
+        self.EnterPathfield.grid(row=3, column=0, sticky="")
+
+        self.UpdatePathButton = Button(self.tab("Startup"), text='Update Path', command=self.master.magic.updatePath)
+        self.AutoDetectPathButton = Button(self.tab("Startup"), text='Auto Detect Path', command=lambda: self.master.magic.updatePathField('PMU.exe'), fg_color='green', hover_color="#004d00")
+        self.UpdatePathButton.grid(row=4, column=0, sticky="", pady=10)
+        self.AutoDetectPathButton.grid(row=5, column=0, sticky="", pady=10)
+
+        self.tab("Startup").columnconfigure(0, weight=1)
+        self.tab("Startup").rowconfigure((0, 1, 2, 4, 5), weight=1)
+
+        # tab 2 - GFX - deleted
+
+        # tab 3 - SFX
+        self.add("SFX Mods")
+
+        # SFX Buttons
+        self.SFXMuteButton = Button(self.tab("SFX Mods"), text='Enable Silent Client', command=self.master.magic.mute, fg_color='brown')
+        self.SFXUnMuteButton = Button(self.tab("SFX Mods"), text='Disable Silent Client', command=self.master.magic.unmute,
+                                      fg_color='brown')
+        self.SFXMuteButton.grid(row=0, column=0)
+        self.SFXUnMuteButton.grid(row=0, column=1, sticky="")
+
+        self.SFXResetButton = Button(self.tab("SFX Mods"), text='Reset SFX Folders', command=self.master.magic.sfxResetFolder,
+                                     fg_color='brown')
+        self.SFXResetButton.grid(row=2, column=0, columnspan=2, sticky="", pady=(0, 10))
+
+        # Current Mode Labels
+        self.SFXLbl = Label(self.tab("SFX Mods"), text="Current Mode: ")
+        self.SFXStatusLbl = Label(self.tab("SFX Mods"), text=self.master.magic.getSfxState(), text_color='orange red')
+        self.SFXLbl.grid(row=1, column=0, columnspan=1, sticky="e")
+        self.SFXStatusLbl.grid(row=1, column=1, columnspan=1, sticky="w")
+
+        self.tab("SFX Mods").rowconfigure((0, 1), weight=1)
+        self.tab("SFX Mods").columnconfigure((0, 1), weight=1)
+
+        self.exitButton = Button(self, text='Exit', command=exit, fg_color='brown', width=100)
+        self.exitButton.grid(row=5, sticky="s", pady=(10, 0))
+
+        self.statusLbl = Label(self, text="status", text_color='green')
+        self.statusLbl.grid(row=6, column=0, sticky="sw", ipadx=10)
+
+        self.mode = customtkinter.get_appearance_mode()
+        self.modebutton = Button(self, text="", image=theme_img, fg_color=None, hover_color=None, command=self.themechange, width=10)
+        self.modebutton.grid(row=0, column=0, sticky="e")
+
+    def themechange(self):
+        if self.mode == "Dark":
+            customtkinter.set_appearance_mode("light")
+            self.mode = customtkinter.get_appearance_mode()
+        else:
+            customtkinter.set_appearance_mode("dark")
+            self.mode = customtkinter.get_appearance_mode()
+
+
+class RotoView(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.tabs = {}
         self.magic = Magic(self)
-        self.grid()
+        self.pathfield = tk.StringVar()
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
+        self.tabber = RotoTabs(master=self, segmented_button_fg_color=None)
+        self.tabber.grid(row=0, column=0, padx=20, pady=20)
+        self.tabber._segmented_button.grid(sticky="w")
+
         # rotom logo
-        img = ImageTk.PhotoImage(Image.open("./assets/GFX/smol.png"))
-        rotom = tk.Label(self, image=img)
+        img = ctk.CTkImage(Image.open("./assets/GFX/smol.png"), size=(77, 77))
+        rotom = ctk.CTkLabel(self, image=img, text="")
         rotom.image = img
         rotom.place(relx=1.0, rely=1.0, anchor='s')
         # end of logo
@@ -30,68 +116,9 @@ class RotoView(tk.Tk):
         self.iconbitmap("rotoview.ico")
         self.title('Rotoview-v0.2.5')
 
-        # Notebook Widget
-        notebook = ttk.Notebook(self, width=550, height=300)
-        notebook.grid(padx=20, pady=20)
-
-        # tab1 - Start up
-        self.tab_startup = ttk.Frame(notebook, padding=20)
-        self.LblCurrentPath = Label(self.tab_startup, text="Current Path:", fg='blue')
-        self.LblCurrentPath.grid(row=0, column=0, sticky="")
-        self.LblPath = Label(self.tab_startup, text=f"path.txt = {self.magic.path}", fg='blue')
-        self.LblPath.grid(row=1, column=0, sticky="")
-
-        self.LblPathHelper = Label(self.tab_startup, text="Enter Client path below or Auto Detect when game is open", fg='blue')
-        self.LblPathHelper.grid(row=2, column=0, sticky="", pady=(50, 0))
-
-        self.pathfield = tk.StringVar()
-        self.EnterPathfield = tk.Entry(self.tab_startup, textvariable=self.pathfield, width=75)
-        self.EnterPathfield.grid(row=3, column=0, sticky="")
-
-        self.UpdatePathButton = tk.Button(self.tab_startup, text='Update Path', command=self.magic.updatePath, bg='brown', fg='white')
-        self.AutoDetectPathButton = tk.Button(self.tab_startup, text='Auto Detect Path', command=lambda: self.magic.updatePathField('PMU.exe'), bg='green', fg='white')
-        self.UpdatePathButton.grid(row=4, column=0, sticky="", pady=10)
-        self.AutoDetectPathButton.grid(row=5, column=0, sticky="", pady=10)
-
-        for i, _ in enumerate(self.tab_startup.children):
-            self.tab_startup.columnconfigure(i, weight=1)
-            if i not in (1, 0):
-                self.tab_startup.rowconfigure(i, weight=1)
-
-        self.tabs["Start up"] = self.tab_startup
-
-        # tab 2 - GFX - deleted
-
-        # tab 3 - SFX
-        self.tab_sfx = ttk.Frame(notebook, padding=100)
-
-        # SFX Buttons
-        self.SFXMuteButton = tk.Button(self.tab_sfx, text='Enable Silent Client', command=self.magic.mute, bg='brown', fg='white', takefocus=False)
-        self.SFXUnMuteButton = tk.Button(self.tab_sfx, text='Disable Silent Client', command=self.magic.unmute, bg='brown', fg='white', takefocus=False)
-        self.SFXMuteButton.grid(row=0, column=0,  sticky="")
-        self.SFXUnMuteButton.grid(row=0, column=1,  sticky="")
-
-        self.SFXResetButton = tk.Button(self.tab_sfx, text='Reset SFX Folders', command=self.magic.sfxResetFolder, bg='brown', fg='white', takefocus=False)
-        self.SFXResetButton.grid(row=2, column=0, columnspan=2, sticky="")
-
-        # Current Mode Labels
-        self.SFXLbl = Label(self.tab_sfx, text="Current Mode: ", fg='blue')
-        self.SFXStatusLbl = Label(self.tab_sfx, text=self.magic.getSfxState(), fg='orange red')
-        self.SFXLbl.grid(row=1, column=0, columnspan=1, sticky="e", pady=20)
-        self.SFXStatusLbl.grid(row=1, column=1, columnspan=1, sticky="", pady=20, padx=(0, 50))
-
-        self.tab_sfx.columnconfigure(0, weight=1)
-        self.tab_sfx.columnconfigure(1, weight=1)
-
-        self.tabs["SFX Mods"] = self.tab_sfx
-
-        [notebook.add(tab, text=k) for k, tab in self.tabs.items()]
-
-        self.exitButton = tk.Button(text='Exit', command=exit, bg='brown', fg='white', width=10)
-        self.exitButton.grid(row=5, sticky="s")
-
-        self.statusLbl = Label(self, text="status", fg='green')
-        self.statusLbl.grid(row=6, column=0, sticky="sw")
+        self.geometry()
+        self.update()
+        self.minsize(self.winfo_width(), self.winfo_height() - 50)
 
     def exit(self):
         self.destroy()
