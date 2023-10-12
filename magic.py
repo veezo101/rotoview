@@ -25,11 +25,11 @@ class Magic:
                     self.path = self.rv.pathfield.get()
                     with open('path.txt', 'w') as file:
                         file.write(self.path)
-                    self.rv.statusLbl.config(text="Successfully detected path")
-                    self.rv.LblPath.config(text=f"path.txt = {self.path}")
-                    self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                    self.rv.tabber.statusLbl.configure(text="Successfully detected path")
+                    self.rv.tabber.LblPath.configure(text=f"path.txt = {self.path}")
+                    self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
                     return
-            self.rv.statusLbl.config(text="Failed to auto detect path. Make sure the client is open!")
+            self.rv.tabber.statusLbl.configure(text="Failed to auto detect path. Make sure the client is open!")
         except Exception as ex:
             self.rv.pathfield.set('')
             raise ex
@@ -39,14 +39,14 @@ class Magic:
             self.path = self.rv.pathfield.get()
             with open('path.txt', 'w') as file:
                 file.write(self.path)
-            self.rv.statusLbl.config(text='Successfully updated path')
+            self.rv.tabber.statusLbl.configure(text='Successfully updated path')
             writtenFile = open('path.txt', 'r')
             self.path = writtenFile.read().rstrip()
-            self.rv.LblPath.config(text=f"path.txt = {self.path}")
-            self.rv.statusLbl.config(text='Successfully updated and read path')
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            self.rv.tabber.LblPath.configure(text=f"path.txt = {self.path}")
+            self.rv.tabber.statusLbl.configure(text='Successfully updated and read path')
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except Exception as ex:
-            self.rv.statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
+            self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
             raise ex
 
     def getSfxState(self):
@@ -72,8 +72,8 @@ class Magic:
         try:
             currentState = self.getSfxState()
             if (currentState == "invalidpath"):
-                self.rv.statusLbl.config(text="Invalid Game Path!")
-                self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Invalid Game Path!")
+                self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
                 return
             if currentState == "muted":
                 os.rename("{0}/SFX".format(self.path), "{0}/SFX-RotoSilent".format(self.path))
@@ -86,84 +86,84 @@ class Magic:
             else:
                 if not os.path.exists('{0}/SFX'.format(self.path)):
                     os.mkdir('{0}/SFX'.format(self.path))
-            self.rv.statusLbl.config(text="Successfully Restored SFX directory structure")
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            self.rv.tabber.statusLbl.configure(text="Successfully Restored SFX directory structure")
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except Exception as ex:
             if type(ex) == PermissionError:
-                self.rv.statusLbl.config(text="Permission Error. Close the game client and retry.")
-                self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Permission Error. Close the game client and retry.")
+                self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
                 return
-            self.rv.statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
 
     def mute(self):
         try:
             currentState = self.getSfxState()
             if currentState == "invalidpath":
-                self.rv.statusLbl.config(text="Invalid Game Path!")
-                self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Invalid Game Path!")
+                self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             if currentState == "muted":
-                self.rv.statusLbl.config(text="Already muted!")
-                self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Already muted!")
+                self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
                 return
             if currentState == "raiseResetFlag" or currentState == "schrodinger" or currentState == "nosfxbutog":
                 self.sfxResetFolder()
-                self.rv.statusLbl.config(text="Folders Reset due to an error. Please try again")
+                self.rv.tabber.statusLbl.configure(text="Folders Reset due to an error. Please try again")
             if currentState == "clean":
                 with zipfile.ZipFile('./SilentSFX.zip', 'r') as silent_zip:
                     silent_zip.extractall('{0}/SFX-RotoSilent'.format(self.path))
                 os.rename("{0}/SFX".format(self.path), "{0}/SFX-RotoOG".format(self.path))
                 os.rename("{0}/SFX-RotoSilent".format(self.path), "{0}/SFX".format(self.path))
-                self.rv.statusLbl.config(text="Client successfully muted except shiny")
+                self.rv.tabber.statusLbl.configure(text="Client successfully muted except shiny")
                 if os.path.exists('./assets/SFX/magic838.ogg'):
                     shutil.copy('./assets/SFX/magic838.ogg', "{0}/SFX/magic838.ogg".format(self.path))
-                self.rv.statusLbl.config(text="Client successfully muted except custom shiny!")
+                self.rv.tabber.statusLbl.configure(text="Client successfully muted except custom shiny!")
             if currentState == "unmuted":
                 os.rename("{0}/SFX".format(self.path), "{0}/SFX-RotoOG".format(self.path))
-                self.rv.statusLbl.config(text="Moved current to OG")
+                self.rv.tabber.statusLbl.configure(text="Moved current to OG")
                 os.rename("{0}/SFX-RotoSilent".format(self.path), "{0}/SFX".format(self.path))
-                self.rv.statusLbl.config(text="Client successfully muted except shiny")
+                self.rv.tabber.statusLbl.configure(text="Client successfully muted except shiny")
                 if (os.path.exists('./assets/SFX/magic838.ogg')):
                     shutil.copy('./assets/SFX/magic838.ogg', "{0}/SFX/magic838.ogg".format(self.path))
-                    self.rv.statusLbl.config(text="Client successfully muted except custom shiny!")
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                    self.rv.tabber.statusLbl.configure(text="Client successfully muted except custom shiny!")
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except FileNotFoundError as ex:
-            # statusLbl.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
-            self.rv.statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            # statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
+            self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except Exception as ex:
-            self.rv.statusLbl.config(text="Failed to mute client. Try again after closing the Client")
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            self.rv.tabber.statusLbl.configure(text="Failed to mute client. Try again after closing the Client")
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             # debug
-            # statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            # statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
 
     def unmute(self):
         try:
             currentState = self.getSfxState()
             if (currentState == "invalidpath"):
-                self.rv.statusLbl.config(text="Invalid Game Path!")
-                self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Invalid Game Path!")
+                self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             if (currentState == "unmuted"):
-                self.rv.statusLbl.config(text="Already unmuted!")
+                self.rv.tabber.statusLbl.configure(text="Already unmuted!")
                 return
             if (currentState == "raiseResetFlag" or currentState == "schrodinger" or currentState == "nosfxbutog"):
                 self.sfxResetFolder()
-                self.rv.statusLbl.config(text="Folders Reset due to an error. Please try again")
+                self.rv.tabber.statusLbl.configure(text="Folders Reset due to an error. Please try again")
             if (currentState == "clean"):
                 with zipfile.ZipFile('./SilentSFX.zip', 'r') as silent_zip:
                     silent_zip.extractall('{0}/SFX-RotoSilent'.format(self.path))
-                self.rv.statusLbl.config(text="Client successfully unmuted")
+                self.rv.tabber.statusLbl.configure(text="Client successfully unmuted")
             if (currentState == "muted"):
                 os.rename("{0}/SFX".format(self.path), "{0}/SFX-RotoSilent".format(self.path))
                 os.rename("{0}/SFX-RotoOG".format(self.path), "{0}/SFX".format(self.path))
-                self.rv.statusLbl.config(text="Client successfully unmuted")
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+                self.rv.tabber.statusLbl.configure(text="Client successfully unmuted")
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except FileNotFoundError as ex:
-            # statusLbl.config(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
-            self.rv.statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            # statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
+            self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except Exception as ex:
-            self.rv.statusLbl.config(text="Failed to mute client. Try again after closing the Client")
-            self.rv.SFXStatusLbl.config(text=self.getSfxState())
+            self.rv.tabber.statusLbl.configure(text="Failed to mute client. Try again after closing the Client")
+            self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             # debug
-            # statusLbl.config(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            # statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
