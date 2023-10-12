@@ -95,6 +95,7 @@ class Magic:
                 return
             self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
+            raise ex
 
     def mute(self):
         try:
@@ -128,14 +129,16 @@ class Magic:
                     self.rv.tabber.statusLbl.configure(text="Client successfully muted except custom shiny!")
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except FileNotFoundError as ex:
-            # statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
+            # self.rv.tabber.statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
             self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
+            raise ex
         except Exception as ex:
             self.rv.tabber.statusLbl.configure(text="Failed to mute client. Try again after closing the Client")
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             # debug
-            # statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            # self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            raise ex
 
     def unmute(self):
         try:
@@ -159,11 +162,13 @@ class Magic:
                 self.rv.tabber.statusLbl.configure(text="Client successfully unmuted")
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except FileNotFoundError as ex:
-            # statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
+            # self.rv.tabber.statusLbl.configure(text="Failed to find folders (SFX-RotoOG or SFX-RotoSilent)")
             self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
+            raise ex
         except Exception as ex:
             self.rv.tabber.statusLbl.configure(text="Failed to mute client. Try again after closing the Client")
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
             # debug
-            # statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            # self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__,ex.args))
+            raise ex
