@@ -23,8 +23,13 @@ Todo:
 
 ## Installation
 
-Check out [releases]() for pre-compiled versions.
-If you wish to compile yourself, run the following command in the project directory with [pyinstaller](https://pypi.org/project/pyinstaller/)
+Check out [releases]() for pre-compiled versions.\
+If you wish to compile yourself, first get all the relevant packages from [requirements](./requirements.txt)\
+Example:
+```bash
+pip install pillow
+```
+Then run the following command in the project directory with [pyinstaller](https://pypi.org/project/pyinstaller/)
 
 ```bash
 pyinstaller --noconsole --onefile -n rotoview --add-data "path.txt;." --additional-hooks-dir=. --icon=rotoview.ico main.py
@@ -37,4 +42,11 @@ pyinstaller rotoview.spec
 Once completed, a build/ and dist/ directory will be created.\
 The exe can be found in the dist/ directory.\
 Make sure to move over all files such as assets/ path.txt and the icon to the dist folder, in case the pyinstaller fails to do so (to be fixed later)\
-Now the rotoview exe is ready to be used
+Now rotoview.exe is ready to use.
+
+## Authors
+<a href="https://github.com/veezo101/rotoview/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=veezo101/rotoview" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
