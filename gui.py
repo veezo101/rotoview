@@ -76,7 +76,7 @@ class RotoTabs(ctk.CTkTabview):
         self.tab("SFX Mods").columnconfigure((0, 1), weight=1)
 
         self.exitButton = Button(self, text='Exit', command=exit, fg_color='brown', width=100)
-        self.exitButton.grid(row=5, sticky="s", pady=(10, 0))
+        self.exitButton.grid(row=5, sticky="s", pady=(10, 10))
 
         self.statusLbl = Label(self, text="status", text_color='green')
         self.statusLbl.grid(row=6, column=0, sticky="sw", ipadx=10)
@@ -114,11 +114,12 @@ class RotoView(ctk.CTk):
         # end of logo
 
         self.iconbitmap("rotoview.ico")
-        self.title('Rotoview-v0.2.5')
+        self.title('Rotoview-v0.3.1')
 
         self.geometry()
         self.update()
         self.minsize(self.winfo_width(), self.winfo_height() - 50)
+        customtkinter.set_appearance_mode("dark")
 
     def exit(self):
         self.destroy()
