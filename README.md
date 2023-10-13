@@ -49,4 +49,4 @@ Now rotoview.exe is ready to use.
   <img src="https://contrib.rocks/image?repo=veezo101/rotoview" />
 </a>
 
-Made with [contrib.rocks](https://contrib.rocks).
+Contrib chart made with [contrib.rocks](https://contrib.rocks).
