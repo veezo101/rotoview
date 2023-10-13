@@ -17,6 +17,8 @@ Todo:
 - Make the --add-data installation flag actually pick assets and path
 - Make use of the drag and drop library added as additional hook
 - Get list of pokemon with Forms using PokeAPI instead of link
+- Use config and a GFX tab text field to specify dex number, making it flexible to replace more than just Rotom. (Hint: Take Sprite backup from GFX folder based on dex number)
+- Make a full folder of custom SFX, and foreach through them. These can be applied during mute mode.
 
 
 ## Installation

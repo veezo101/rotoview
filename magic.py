@@ -11,10 +11,11 @@ class Magic:
         self.path = None
 
         try:
-            with open('path.txt', 'r') as file:
-                self.path = file.read().rstrip()
+            self.path = self.rv.rotoconfig.getConfig('path').rstrip()
         except IOError:
-            self.path = "path.txt not found"
+            self.path = "config.json not found"
+        except Exception as ex:
+            raise ex
 
     def updatePathField(self, process_name):
         try:
@@ -23,8 +24,7 @@ class Magic:
                     process_exe_path = psutil.Process(process.info['pid']).exe()
                     self.rv.pathfield.set(str(process_exe_path.rpartition('\\')[0]))
                     self.path = self.rv.pathfield.get()
-                    with open('path.txt', 'w') as file:
-                        file.write(self.path)
+                    self.rv.rotoconfig.setConfig('path',self.path)
                     self.rv.tabber.statusLbl.configure(text="Successfully detected path")
                     self.rv.tabber.LblPath.configure(text=f"path.txt = {self.path}")
                     self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
@@ -37,13 +37,9 @@ class Magic:
     def updatePath(self):
         try:
             self.path = self.rv.pathfield.get()
-            with open('path.txt', 'w') as file:
-                file.write(self.path)
-            self.rv.tabber.statusLbl.configure(text='Successfully updated path')
-            writtenFile = open('path.txt', 'r')
-            self.path = writtenFile.read().rstrip()
+            self.rv.rotoconfig.setConfig('path',self.path)
             self.rv.tabber.LblPath.configure(text=f"path.txt = {self.path}")
-            self.rv.tabber.statusLbl.configure(text='Successfully updated and read path')
+            self.rv.tabber.statusLbl.configure(text='Successfully updated path')
             self.rv.tabber.SFXStatusLbl.configure(text=self.getSfxState())
         except Exception as ex:
             self.rv.tabber.statusLbl.configure(text="Error: {0} args: {1}".format(type(ex).__name__, ex.args))

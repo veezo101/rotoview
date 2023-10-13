@@ -5,6 +5,7 @@ import customtkinter as ctk
 from PIL import Image
 
 from magic import Magic
+from ConfigService import RotoConfig
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
@@ -87,9 +88,11 @@ class RotoTabs(ctk.CTkTabview):
 
     def themechange(self):
         if self.mode == "Dark":
+            self.master.rotoconfig.setConfig('appearance','light')
             customtkinter.set_appearance_mode("light")
             self.mode = customtkinter.get_appearance_mode()
         else:
+            self.master.rotoconfig.setConfig('appearance','dark')
             customtkinter.set_appearance_mode("dark")
             self.mode = customtkinter.get_appearance_mode()
 
@@ -97,6 +100,8 @@ class RotoTabs(ctk.CTkTabview):
 class RotoView(ctk.CTk):
     def __init__(self):
         super().__init__()
+        #Config for Rotoview
+        self.rotoconfig = RotoConfig()
         self.magic = Magic(self)
         self.pathfield = tk.StringVar()
         self.rowconfigure(0, weight=1)
@@ -114,12 +119,12 @@ class RotoView(ctk.CTk):
         # end of logo
 
         self.iconbitmap("rotoview.ico")
-        self.title('Rotoview-v0.3.1')
+        self.title('Rotoview-v0.3.2')
 
         self.geometry()
         self.update()
         self.minsize(self.winfo_width(), self.winfo_height() - 50)
-        customtkinter.set_appearance_mode("dark")
+        customtkinter.set_appearance_mode(self.rotoconfig.getConfig('appearance'))
 
     def exit(self):
         self.destroy()
