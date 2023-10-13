@@ -12,7 +12,6 @@ Check out [this](https://www.youtube.com/watch?v=ygGPIg310BU&list=PLfWszzdLIYzkF
 
 Todo:
 - Add releases and look into CI/CD
-- Details of which packages to pip install etc
 - Screenshots/Video demos
 - Make the --add-data installation flag actually pick assets and path
 - Make use of the drag and drop library added as additional hook
