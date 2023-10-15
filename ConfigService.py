@@ -6,6 +6,11 @@ class RotoConfig:
         try:
             with open('config.json','r') as jsonfile:
                 self.config = json.load(jsonfile)
+        except FileNotFoundError as ex:
+            #if config does not exist, create it
+            self.config = {"path": "", "appearance": "system"}
+            with open('config.json', 'w') as jsonfile:
+                json.dump(self.config, jsonfile)
         except Exception as ex:
             raise ex
 
