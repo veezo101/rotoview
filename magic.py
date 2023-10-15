@@ -107,7 +107,7 @@ class Magic:
                 self.sfxResetFolder()
                 self.rv.tabber.statusLbl.configure(text="Folders Reset due to an error. Please try again")
             if currentState == "clean":
-                with zipfile.ZipFile('./SilentSFX.zip', 'r') as silent_zip:
+                with zipfile.ZipFile('./assets/SFX/SilentSFX.zip', 'r') as silent_zip:
                     silent_zip.extractall('{0}/SFX-RotoSilent'.format(self.path))
                 os.rename("{0}/SFX".format(self.path), "{0}/SFX-RotoOG".format(self.path))
                 os.rename("{0}/SFX-RotoSilent".format(self.path), "{0}/SFX".format(self.path))
@@ -149,7 +149,7 @@ class Magic:
                 self.sfxResetFolder()
                 self.rv.tabber.statusLbl.configure(text="Folders Reset due to an error. Please try again")
             if (currentState == "clean"):
-                with zipfile.ZipFile('./SilentSFX.zip', 'r') as silent_zip:
+                with zipfile.ZipFile('./assets/SFX/SilentSFX.zip', 'r') as silent_zip:
                     silent_zip.extractall('{0}/SFX-RotoSilent'.format(self.path))
                 self.rv.tabber.statusLbl.configure(text="Client successfully unmuted")
             if (currentState == "muted"):
