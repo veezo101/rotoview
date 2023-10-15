@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('.\\venv\\Lib\\site-packages', 'customtkinter/')],
+    datas=[('.\\venv\\Lib\\site-packages\\customtkinter', 'customtkinter/')],
     hiddenimports=[],
     hookspath=['.'],
     hooksconfig={},
