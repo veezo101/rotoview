@@ -1,31 +1,32 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
+import shutil
 
+gui_packages = collect_data_files('customtkinter') + collect_data_files('CTkMessagebox')
 
-block_cipher = None
-
+shutil.rmtree("dist/assets/", ignore_errors=True)
+shutil.copytree("assets", "dist/assets")
+shutil.copy("config.json", "dist/config.json")
+shutil.copy("rotoview.png", "dist/rotoview.png")
 
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('path.txt', '.')],
-    hiddenimports=[],
+    datas=gui_packages,
+    hiddenimports=['PIL._tkinter_finder'],
     hookspath=['.'],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
     noarchive=False,
 )
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
-    a.zipfiles,
     a.datas,
     [],
     name='rotoview',
@@ -41,5 +42,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['rotoview.ico'],
+    icon=[],
 )

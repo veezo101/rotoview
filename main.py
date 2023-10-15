@@ -11,4 +11,3 @@ except Exception as ex:
         f.write(str(ex))
         f.write(traceback.format_exc())
         raise ex
-
