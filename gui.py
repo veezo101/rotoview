@@ -76,7 +76,7 @@ class RotoTabs(ctk.CTkTabview):
         self.tab("SFX Mods").rowconfigure((0, 1), weight=1)
         self.tab("SFX Mods").columnconfigure((0, 1), weight=1)
 
-        self.exitButton = Button(self, text='Exit', command=exit, fg_color='brown', width=100)
+        self.exitButton = Button(self, text='Exit', command=self.master.exit, fg_color='brown', width=100)
         self.exitButton.grid(row=5, sticky="s", pady=(10, 10))
 
         self.statusLbl = Label(self, text="status", text_color='green')
