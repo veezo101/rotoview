@@ -5,3 +5,4 @@ __pycache__/
 oldfiles/
 venv/
 log.txt
+*.spec
