@@ -1,4 +1,16 @@
 #!/bin/bash
+
+not_in_virtualenv() {
+    #test if $VIRTUAL_ENV is empty. status code 0 when empty = return true
+    [[ -z "$VIRTUAL_ENV" ]]
+}
+
+# Ensure we are in Virtual Env
+if not_in_virtualenv; then
+    python -m venv venv
+    source ./venv/Scripts/activate
+fi
+
 # Ensure the 'dist' and subdirectories exist
 mkdir -p dist/assets
 
